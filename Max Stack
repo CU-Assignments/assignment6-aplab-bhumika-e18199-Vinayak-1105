@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class MaxStack {
+    stack<int> mainStack, maxStack;
+public:
+    void push(int x) {
+        mainStack.push(x);
+        if (maxStack.empty() || x >= maxStack.top()) 
+            maxStack.push(x);
+    }
+
+    void pop() {
+        if (mainStack.empty()) return;
+        if (mainStack.top() == maxStack.top()) 
+            maxStack.pop();
+        mainStack.pop();
+    }
+
+    int top() {
+        return mainStack.empty() ? -1 : mainStack.top();
+    }
+
+    int getMax() {
+        return maxStack.empty() ? -1 : maxStack.top();
+    }
+};
+
+int main() {
+    MaxStack s;
+    s.push(3);
+    s.push(5);
+    cout << s.getMax() << endl; // Output: 5
+    s.push(7);
+    s.push(1);
+    cout << s.getMax() << endl; // Output: 7
+    s.pop();
+    cout << s.getMax() << endl; // Output: 7
+}
