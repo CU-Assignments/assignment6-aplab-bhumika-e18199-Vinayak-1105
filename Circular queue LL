@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int x) : data(x), next(NULL) {}
+};
+
+class CircularQueue {
+    Node *front, *rear;
+public:
+    CircularQueue() { front = rear = NULL; }
+
+    void enqueue(int x) {
+        Node* newNode = new Node(x);
+        if (!rear) {
+            front = rear = newNode;
+            rear->next = front;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+            rear->next = front;
+        }
+    }
+
+    void dequeue() {
+        if (!front) {
+            cout << "Queue Underflow\n";
+            return;
+        }
+        if (front == rear) { // Single element case
+            delete front;
+            front = rear = NULL;
+        } else {
+            Node* temp = front;
+            front = front->next;
+            rear->next = front;
+            delete temp;
+        }
+    }
+
+    int getFront() {
+        return front ? front->data : -1;
+    }
+};
+
+int main() {
+    CircularQueue cq;
+    cq.enqueue(10);
+    cq.enqueue(20);
+    cout << cq.getFront() << endl; // Output: 10
+    cq.dequeue();
+    cout << cq.getFront() << endl; // Output: 20
+}
