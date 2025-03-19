@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class DequeUsingStack {
+    stack<int> frontStack, backStack;
+
+    void transfer(stack<int>& from, stack<int>& to) {
+        while (!from.empty()) {
+            to.push(from.top());
+            from.pop();
+        }
+    }
+
+public:
+    void pushFront(int x) {
+        frontStack.push(x);
+    }
+
+    void pushBack(int x) {
+        backStack.push(x);
+    }
+
+    int popFront() {
+        if (frontStack.empty()) {
+            if (backStack.empty()) return -1; // Empty deque
+            transfer(backStack, frontStack);
+        }
+        int front = frontStack.top();
+        frontStack.pop();
+        return front;
+    }
+
+    int popBack() {
+        if (backStack.empty()) {
+            if (frontStack.empty()) return -1; // Empty deque
+            transfer(frontStack, backStack);
+        }
+        int back = backStack.top();
+        backStack.pop();
+        return back;
+    }
+};
+
+int main() {
+    DequeUsingStack dq;
+    dq.pushFront(1);
+    dq.pushBack(2);
+    dq.pushFront(3);
+    cout << dq.popFront() << endl; // Output: 3
+    cout << dq.popBack() << endl;  // Output: 2
+}
